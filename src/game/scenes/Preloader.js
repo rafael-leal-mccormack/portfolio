@@ -29,8 +29,21 @@ export class Preloader extends Scene
 
     preload ()
     {
+        console.log("Preloader called")
         //  Load the assets for the game - Replace with your own assets
         this.load.setPath('assets');
+
+        this.load.image("tiles", "tileset/tuxmon-sample-32px.png");
+        this.load.image("interiorTiles", "tileset/interiors.png");
+
+        this.load.tilemapTiledJSON("map", "tilemap/portfolio_map.json");
+        this.load.tilemapTiledJSON("homeMap", "tilemap/home_map.json");
+        this.load.tilemapTiledJSON("workMap", "tilemap/work_interior.json");
+
+        this.load.spritesheet('dude', 
+            'boy.png',
+            { frameWidth: 64, frameHeight: 64 }
+        );
 
         this.load.image('logo', 'logo.png');
         this.load.image('star', 'star.png');

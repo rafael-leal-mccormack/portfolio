@@ -12,7 +12,8 @@ export class MainMenu extends Scene
 
     create ()
     {
-        this.add.image(512, 384, 'background');
+        // this.add.image(512, 384, 'background');
+        this.player = this.physics.add.sprite(50, 50, "dude");
 
         this.logo = this.add.image(512, 300, 'logo').setDepth(100);
 
