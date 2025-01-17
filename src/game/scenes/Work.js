@@ -79,6 +79,17 @@ export class Work extends Scene {
             faceColor: new Phaser.Display.Color(40, 39, 37, 255),
             showCollisionObjects: true,
         });
+
+        const outside = map.findObject("Interactions", (obj) => obj.name === "door");
+        if (outside) {
+            const outsideZone = this.add.zone(outside.x + outside.width / 2, outside.y + outside.height / 2, outside.width, outside.height);
+            this.physics.world.enable(outsideZone);
+            this.physics.add.overlap(this.player.getPlayer(), outsideZone, () => {
+                this.scene.start('Game', {
+                    spawn: 'Work spawn'
+                });
+            });
+        }
     }
 
     update(time, delta) {

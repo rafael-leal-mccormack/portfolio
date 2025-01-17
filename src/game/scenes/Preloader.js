@@ -39,6 +39,7 @@ export class Preloader extends Scene
         this.load.tilemapTiledJSON("map", "tilemap/portfolio_map.json");
         this.load.tilemapTiledJSON("homeMap", "tilemap/home_map.json");
         this.load.tilemapTiledJSON("workMap", "tilemap/work_interior.json");
+        this.load.tilemapTiledJSON("projectsMap", "tilemap/projects_map.json");
 
         this.load.spritesheet('dude', 
             'boy.png',

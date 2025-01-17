@@ -58,6 +58,17 @@ export class Home extends Scene {
             faceColor: new Phaser.Display.Color(40, 39, 37, 255),
             showCollisionObjects: true,
         });
+
+        const outside = map.findObject("Interactions", (obj) => obj.name === "outside");
+        if (outside) {
+            const outsideZone = this.add.zone(outside.x, outside.y, outside.width, outside.height);
+            this.physics.world.enable(outsideZone);
+            this.physics.add.overlap(this.player.getPlayer(), outsideZone, () => {
+                this.scene.start('Game', {
+                    spawn: 'Spawn'
+                });
+            });
+        }
     }
 
     update(time, delta) {

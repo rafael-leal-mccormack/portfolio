@@ -12,12 +12,21 @@ export class Game extends Scene {
     tooltip;
     worldLayer;
     camera;
+    spawnName;
+
+    init(data)  {
+        console.log(data);
+        this.spawnName = data.spawn;
+    }
 
     create() {
         const map = this.make.tilemap({ key: "map" });
+        console.log(this.data);
+        const spawn = this.spawnName ?? "Spawn";
+        console.log(spawn);
         const spawnPoint = map.findObject(
             "Spawn",
-            (obj) => obj.name === "Spawn"
+            (obj) => obj.name === spawn
         );
 
         const tileset = map.addTilesetImage("tuxmon-sample-32px", "tiles");
