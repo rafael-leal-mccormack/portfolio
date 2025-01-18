@@ -1,10 +1,17 @@
 import Phaser, { Scene } from "phaser";
 import { Player } from "../objects/player";
 import { createPlayerAnimations } from "../animations/PlayerAnimations";
+import { fadeIn, fadeOut } from "../animations/Scenes";
 
 export class Work extends Scene {
     constructor() {
         super("Work");
+    }
+
+    fadingOut = false;
+
+    init() {
+        this.fadingOut = false;
     }
 
     preload() {
@@ -31,6 +38,8 @@ export class Work extends Scene {
 
         groundLayer.setCollisionByProperty({ collision: true });
         groundLayer.setCollisionFromCollisionGroup();
+
+        fadeIn(this.cameras.main, 500);
 
         // create player
         const spawnPoint = map.findObject("Spawn", (obj) => obj);
@@ -85,9 +94,12 @@ export class Work extends Scene {
             const outsideZone = this.add.zone(outside.x + outside.width / 2, outside.y + outside.height / 2, outside.width, outside.height);
             this.physics.world.enable(outsideZone);
             this.physics.add.overlap(this.player.getPlayer(), outsideZone, () => {
-                this.scene.start('Game', {
-                    spawn: 'Work spawn'
-                });
+                if (!this.fadingOut) {
+                    this.fadingOut = true;
+                    fadeOut(this.cameras.main, 500, this.scene, "Game", {
+                        spawn: 'Work spawn'
+                    });
+                }
             });
         }
     }
@@ -95,6 +107,11 @@ export class Work extends Scene {
     update(time, delta) {
         // Game loop, runs continuously
         this.controls.update(delta);
+
+        if (this.fadingOut) {
+            return;
+        }
+
         this.player.setControls(this.cursors, this.camera);
     }
 }

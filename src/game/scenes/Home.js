@@ -1,10 +1,17 @@
 import Phaser, { Scene } from "phaser";
 import { Player } from "../objects/player";
 import { createPlayerAnimations } from "../animations/PlayerAnimations";
+import { fadeIn, fadeOut } from "../animations/Scenes";
 
 export class Home extends Scene {
     constructor() {
         super("Home");
+    }
+
+    fadingOut;
+
+    init() {
+        this.fadingOut = false;
     }
 
     preload() {
@@ -32,8 +39,10 @@ export class Home extends Scene {
         groundLayer.setCollisionByProperty({ collision: true });
         groundLayer.setCollisionFromCollisionGroup();
 
+        fadeIn(this.cameras.main, 500);
+
         // create player
-        const spawnPoint = map.findObject("Spawn", (obj) => obj);
+        const spawnPoint = map.findObject("Spawn", (obj) => !!obj);
         this.player = new Player(spawnPoint.x, spawnPoint.y, this.physics);
         this.player.getPlayer().setScale(0.5);
         createPlayerAnimations(this.anims);
@@ -64,15 +73,21 @@ export class Home extends Scene {
             const outsideZone = this.add.zone(outside.x, outside.y, outside.width, outside.height);
             this.physics.world.enable(outsideZone);
             this.physics.add.overlap(this.player.getPlayer(), outsideZone, () => {
-                this.scene.start('Game', {
-                    spawn: 'Spawn'
-                });
+                if (!this.fadingOut) {
+                    this.fadingOut = true;
+                    fadeOut(this.cameras.main, 500, this.scene, "Game", {
+                        spawn: 'Spawn'
+                    });
+                }
             });
         }
     }
 
     update(time, delta) {
         this.controls.update(delta);
+        if (this.fadingOut) {
+            return;
+        }
         this.player.setControls(this.cursors, this.camera);
 
         // Game loop, runs continuously

@@ -1,10 +1,17 @@
 import Phaser, { Scene } from "phaser";
 import { Player } from "../objects/player";
 import { createPlayerAnimations } from "../animations/PlayerAnimations";
+import { fadeIn, fadeOut } from "../animations/Scenes";
 
 export class Projects extends Scene {
   constructor() {
     super("Projects");
+  }
+
+  fadingOut = false;
+
+  init() {
+    this.fadingOut = false;
   }
 
   preload() {
@@ -31,8 +38,10 @@ export class Projects extends Scene {
       groundLayer.setDepth(1);
 
       groundLayer.setCollisionByProperty({ collision: true });
+      homeLayer.setCollisionByProperty({ collision: true });
       groundLayer.setCollisionFromCollisionGroup();
 
+      fadeIn
       // create player
       const spawnPoint = map.findObject("Spawn", (obj) => obj);
       this.player = new Player(spawnPoint.x, spawnPoint.y, this.physics);
@@ -42,6 +51,7 @@ export class Projects extends Scene {
       this.cursors = this.input.keyboard.createCursorKeys();
       this.controls = this.player.createControls(this.cursors);
       this.player.addCollider(groundLayer);
+      this.player.addCollider(homeLayer);
 
       // apply collisions layer
 
@@ -86,15 +96,23 @@ export class Projects extends Scene {
           const outsideZone = this.add.zone(outside.x + outside.width / 2, outside.y + outside.height / 2, outside.width, outside.height);
           this.physics.world.enable(outsideZone);
           this.physics.add.overlap(this.player.getPlayer(), outsideZone, () => {
-              this.scene.start('Game', {
-                  spawn: 'Projects spawn'
-              });
+              if (!this.fadingOut) {
+                  this.fadingOut = true;
+                  fadeOut(this.cameras.main, 500, this.scene, "Game", {
+                      spawn: 'Projects spawn'
+                  });
+              }
           });
       }
   }
 
   update(time, delta) {
     this.controls.update(delta);
+
+    if (this.fadingOut) {
+        return;
+    }
+
     this.player.setControls(this.cursors, this.camera);
   }
 }

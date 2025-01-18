@@ -2,7 +2,7 @@ import { EventBus } from "../EventBus";
 import Phaser, { Scene } from "phaser";
 import { Player } from "../objects/player";
 import { createPlayerAnimations } from "../animations/PlayerAnimations";
-
+import { fadeIn, fadeOut } from "../animations/Scenes";
 export class Game extends Scene {
     constructor() {
         super("Game");
@@ -14,16 +14,16 @@ export class Game extends Scene {
     camera;
     spawnName;
 
+    fadingOut;
+
     init(data)  {
-        console.log(data);
         this.spawnName = data.spawn;
+        this.fadingOut = false;
     }
 
     create() {
         const map = this.make.tilemap({ key: "map" });
-        console.log(this.data);
         const spawn = this.spawnName ?? "Spawn";
-        console.log(spawn);
         const spawnPoint = map.findObject(
             "Spawn",
             (obj) => obj.name === spawn
@@ -45,6 +45,8 @@ export class Game extends Scene {
         const interactionLayer = map.createLayer("Interactions", tileset, 0, 0);
         interactionLayer.setDepth(4);
 
+        fadeIn(this.cameras.main, 500);
+
         worldLayer.setCollisionByProperty({ collision: true });
         aboveLayer.setCollisionByProperty({ collision: true });
         interactionLayer.setCollisionByProperty({ interaction: true });
@@ -55,7 +57,7 @@ export class Game extends Scene {
         this.player.addCollider(worldLayer);
         this.player.addCollider(aboveLayer);
 
-        const debugGraphics = this.add.graphics().setAlpha(1).setDepth(10);
+        // const debugGraphics = this.add.graphics().setAlpha(1).setDepth(10);
 
         // worldLayer.renderDebug(debugGraphics, {
         //     tileColor: null,
@@ -103,9 +105,9 @@ export class Game extends Scene {
         this.tooltip = this.add
             .text(0, 0, "", {
                 font: "16px monospace",
-                fill: "#ffffff",
                 padding: { x: 10, y: 5 },
                 backgroundColor: "#000000",
+                color: "#ffffff",
                 alpha: 0.8,
             })
             .setDepth(300)
@@ -118,30 +120,27 @@ export class Game extends Scene {
             this.player.getPlayer(),
             worldLayer,
             (player, tile) => {
-                if (tile.properties.door) {
-                    // Show tooltip above the player
-                    this.tooltip.setVisible(true);
-                    this.tooltip.setText("Press E to enter");
-                    this.tooltip.setPosition(
-                        player.x - this.tooltip.width / 2,
-                        player.y - player.height - this.tooltip.height
-                    );
-
-                    if (Phaser.Input.Keyboard.JustDown(this.enterKey)) {
-                        if (tile.properties.home) {
-                            console.log("Loading home scene");
-                            this.scene.start("Home");
-                        } else if (tile.properties.work) {
-                            console.log("Loading work scene");
-                            this.scene.start("Work");
-                        } else if (tile.properties.projects) {
-                            console.log("Loading projects scene");
-                            this.scene.start("Projects");
+                if (tile instanceof Phaser.Tilemaps.Tile && tile.properties?.door) {
+                    // TODO: optimize this
+                    if (tile.properties.home) {
+                        if (!this.fadingOut) {
+                            this.fadingOut = true;
+                            fadeOut(this.cameras.main, 500, this.scene, "Home");
+                        }
+                    } else if (tile.properties.work) {  
+                        if (!this.fadingOut) {
+                            this.fadingOut = true;
+                            fadeOut(this.cameras.main, 500, this.scene, "Work");
+                        }
+                    } else if (tile.properties.projects) {
+                        if (!this.fadingOut) {
+                            this.fadingOut = true;
+                            fadeOut(this.cameras.main, 500, this.scene, "Projects");
                         }
                     }
                 }
 
-                if (tile.properties.interaction) {
+                if (tile instanceof Phaser.Tilemaps.Tile && tile.properties?.interaction) {
                     this.tooltip.setVisible(true);
                     this.tooltip.setText(tile.properties.text);
                     this.tooltip.setPosition(
@@ -160,14 +159,19 @@ export class Game extends Scene {
     update(time, delta) {
         this.controls.update(delta);
 
+        if (this.fadingOut) {
+            return;
+        }
+
         this.player.setControls(this.cursors, this.camera);
+
 
         // Check if player is near any interactive objects
         const tile = this.worldLayer.getTileAtWorldXY(
             this.player.getX(),
             this.player.getY() + 8
         );
-        if (!tile || (!tile.properties.door && !tile.properties.interaction)) {
+        if (!tile || (!tile.properties.interaction)) {
             // Hide tooltip if not near a door
             this.tooltip.setVisible(false);
         }
