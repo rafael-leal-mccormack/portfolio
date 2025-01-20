@@ -7,6 +7,7 @@ function App() {
     const phaserRef = useRef();
     const [showModal, setShowModal] = useState(false);
     const [pictureUrl, setPictureUrl] = useState('');
+    const [isMuted, setIsMuted] = useState(false);
 
     useEffect(() => {
         const handleShowPicture = (url) => {
@@ -28,12 +29,21 @@ function App() {
         }
     };
 
+    const toggleMute = () => {
+        console.log("Togglling")
+        setIsMuted(!isMuted);
+        EventBus.emit('toggle-mute');
+    };
+
     return (
         <div id="app">
             <PhaserGame ref={phaserRef} />
-            <div>
-                <div>
+            <div className='controls'>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
                     <button className="button" onClick={changeScene}>Change Scene</button>
+                    <button className="button" onClick={toggleMute}>
+                        {isMuted ? '🔇 Unmute' : '🔊 Mute'}
+                    </button>
                 </div>
             </div>
 

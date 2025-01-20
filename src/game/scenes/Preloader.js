@@ -72,7 +72,7 @@ export class Preloader extends Scene
             'pets/asmodeus-OW.png',
             { frameWidth: 64, frameHeight: 64 }
         );
-        
+
         this.load.image("raf", "people/raf.png");
         this.load.image("pets", "pets/together.png");
 
@@ -80,6 +80,11 @@ export class Preloader extends Scene
 
         this.load.audio("menu-music", "sounds/The_Forlorn_Homestead.mp3");
         this.load.audio("base-map", "sounds/Sea_Shanty_2.mp3");
+
+        this.load.image("ukgIcon", "work/Ukg_Logo.png");
+        this.load.image("nbaIcon", "work/Nba_Logo.png");
+        this.load.image("mentrIcon", "work/Mentr_Logo.png");
+        this.load.image("airclawIcon", "work/Airclaw_Logo.png");
     }
 
     create ()

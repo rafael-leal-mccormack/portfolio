@@ -205,6 +205,53 @@
         }, 
         {
          "draworder":"topdown",
+         "id":6,
+         "name":"Icons",
+         "objects":[
+                {
+                 "height":0,
+                 "id":12,
+                 "name":"airclaw",
+                 "point":true,
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":486.528497409326,
+                 "y":319.689119170984
+                }, 
+                {
+                 "height":0,
+                 "id":13,
+                 "name":"mentr",
+                 "point":true,
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":550.259067357513,
+                 "y":320.725388601036
+                }, 
+                {
+                 "height":0,
+                 "id":14,
+                 "name":"nba",
+                 "point":true,
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":614.507772020725,
+                 "y":319.170984455959
+                }],
+         "opacity":1,
+         "type":"objectgroup",
+         "visible":true,
+         "x":0,
+         "y":0
+        }, 
+        {
+         "draworder":"topdown",
          "id":4,
          "name":"Spawn",
          "objects":[
@@ -241,6 +288,39 @@
                  "width":55.958549222798,
                  "x":405.181347150259,
                  "y":458.031088082902
+                }, 
+                {
+                 "height":37.8238341968912,
+                 "id":15,
+                 "name":"airclaw",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":62.1761658031088,
+                 "x":449.222797927461,
+                 "y":305.181347150259
+                }, 
+                {
+                 "height":37.3056994818653,
+                 "id":16,
+                 "name":"mentr",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":62.1761658031088,
+                 "x":512.953367875648,
+                 "y":305.699481865285
+                }, 
+                {
+                 "height":38.860103626943,
+                 "id":17,
+                 "name":"nba",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":62.1761658031088,
+                 "x":577.720207253886,
+                 "y":305.181347150259
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -248,8 +328,8 @@
          "x":0,
          "y":0
         }],
- "nextlayerid":6,
- "nextobjectid":12,
+ "nextlayerid":7,
+ "nextobjectid":18,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.11.1",
@@ -258,7 +338,7 @@
         {
          "columns":120,
          "firstgid":1,
-         "image":"..\/..\/..\/..\/..\/..\/Downloads\/interiorTiles.png",
+         "image":"..\/..\/..\/..\/..\/..\/Downloads\/Game Boy Advance - Pokemon Ruby Sapphire - Interior Areas.png",
          "imageheight":2864,
          "imagewidth":1920,
          "margin":0,
@@ -900,7 +980,7 @@
                         {
                          "name":"collision",
                          "type":"bool",
-                         "value":false
+                         "value":true
                         }]
                 }, 
                 {
@@ -909,7 +989,7 @@
                         {
                          "name":"collision",
                          "type":"bool",
-                         "value":false
+                         "value":true
                         }]
                 }, 
                 {
@@ -918,7 +998,7 @@
                         {
                          "name":"collision",
                          "type":"bool",
-                         "value":false
+                         "value":true
                         }]
                 }, 
                 {

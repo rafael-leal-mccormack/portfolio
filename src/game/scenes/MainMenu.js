@@ -9,6 +9,7 @@ export class MainMenu extends Scene {
     }
 
     create() {
+        this.sound.pauseOnBlur = false;
         // animating background
         const background = this.add.sprite(350, 200, "bg");
         background.setScale(0.8);

@@ -17,7 +17,6 @@ export class Player {
         this.playerObj.body.setSize(16, 16); // Set collision box size
         this.playerObj.setScale(0.75);
         this.playerObj.body.setOffset(24, 40); // Adjust collision box
-        this.physics.world.createDebugGraphic();
     }
 
     valueOf() {
@@ -28,7 +27,10 @@ export class Player {
         return this.playerObj;
     }
 
-    debugMode(val) {
+    debugMode(val = false) {
+        if (val) {
+            this.physics.world.createDebugGraphic();
+        }
         this.playerObj.body.debugShowBody = val;
         this.playerObj.body.debugShowVelocity = val;
     }

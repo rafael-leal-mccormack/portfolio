@@ -47,6 +47,44 @@ body {
     }
 }
 
+.game-container {
+    position: relative;
+    canvas {
+        border-radius: 1rem;
+    }
+}
+
+.background-overlay {
+    top: -16rem;
+    left: -10rem;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    z-index: -1;
+
+    img {
+        width: 146%
+    }
+}
+
+@media (max-width: 720px) {
+    #app {
+        align-items: initial;
+        padding-top: 7rem;
+    }
+
+    .game-container {
+        text-align: center;
+    }
+    canvas {
+        width: 95%;
+        margin-top: 1.5rem;
+    }
+    .controls {
+        display: none;
+    }
+}
+
 .modal-overlay {
     position: fixed;
     top: 0;
