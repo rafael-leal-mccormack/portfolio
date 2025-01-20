@@ -1,18 +1,20 @@
 {
-  "compilerOptions": {
-      "baseUrl": ".",
-      "paths": {
-          "*": ["src/*"]
-      },
-      "module": "ES6",
-      "target": "ES6",
-      "moduleResolution": "node",
-      "jsx": "preserve",
-      "resolveJsonModule": true,
-      "esModuleInterop": true,
-      "allowSyntheticDefaultImports": true,
-      "noImplicitAny": false
-  },
-  "include": ["src/**/*"],
-  "exclude": ["node_modules", "build", "dist"]
+    "compilerOptions": {
+        "baseUrl": ".",
+        "paths": {
+            "*": ["src/*"]
+        },
+        "module": "ES6",
+        "target": "ES6",
+        "moduleResolution": "node",
+        "jsx": "preserve",
+        "resolveJsonModule": true,
+        "esModuleInterop": true,
+        "allowSyntheticDefaultImports": true,
+        "noImplicitAny": false
+    },
+    "typeRoots": ["./node_modules/phaser/types"],
+    "types": ["Phaser"],
+    "include": ["src/**/*"],
+    "exclude": ["node_modules", "build", "dist"]
 }

@@ -33,27 +33,26 @@ export class Player {
         this.playerObj.body.debugShowVelocity = val;
     }
 
-    setControls(cursors, camera) {
+    setControls(cursors, camera, multiplier = 1) {
         this.cursors = cursors;
         this.playerObj.body.setVelocity(0);
 
         // Horizontal movement
         if (this.cursors.left.isDown) {
-            this.playerObj.body.setVelocityX(-100);
+            this.playerObj.body.setVelocityX(-100 * multiplier);
         } else if (this.cursors.right.isDown) {
-            this.playerObj.body.setVelocityX(100);
+            this.playerObj.body.setVelocityX(100 * multiplier);
         }
 
         // Vertical movement
         if (this.cursors.up.isDown) {
-            this.playerObj.body.setVelocityY(-100);
+            this.playerObj.body.setVelocityY(-100 * multiplier);
         } else if (this.cursors.down.isDown) {
-            this.playerObj.body.setVelocityY(100);
+            this.playerObj.body.setVelocityY(100 * multiplier);
         }
 
         // Normalize and scale the velocity so that player can't move faster along a diagonal
-
-        this.playerObj.body.velocity.normalize().scale(125);
+        this.playerObj.body.velocity.normalize().scale(125 * multiplier);
 
         updatePlayerAnimation(this.playerObj);
 

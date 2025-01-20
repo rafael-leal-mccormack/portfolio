@@ -88,6 +88,7 @@ export class Game extends Scene {
         // Constrain the camera so that it isn't allowed to move outside the width/height of tilemap
         camera.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
         camera.centerOn(this.player.getX(), this.player.getY());
+        // camera.setLerp(true, 0.05);
 
         // Help text that has a "fixed" position on the screen
         this.add
@@ -152,6 +153,10 @@ export class Game extends Scene {
             null,
             this
         );
+
+        this.sound.stopAll();
+        const music = this.sound.add("base-map");
+        music.play({ loop: true });
 
         EventBus.emit("current-scene-ready", this);
     }

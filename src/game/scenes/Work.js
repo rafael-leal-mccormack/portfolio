@@ -80,14 +80,14 @@ export class Work extends Scene {
         camera.centerOn(this.player.getX(), this.player.getY());
 
         // create debug graphics
-        const debugGraphics = this.add.graphics().setAlpha(0.75).setDepth(10);
+        // const debugGraphics = this.add.graphics().setAlpha(0.75).setDepth(10);
 
-        groundLayer.renderDebug(debugGraphics, {
-            tileColor: null,
-            collidingTileColor: new Phaser.Display.Color(243, 134, 48, 255),
-            faceColor: new Phaser.Display.Color(40, 39, 37, 255),
-            showCollisionObjects: true,
-        });
+        // groundLayer.renderDebug(debugGraphics, {
+        //     tileColor: null,
+        //     collidingTileColor: new Phaser.Display.Color(243, 134, 48, 255),
+        //     faceColor: new Phaser.Display.Color(40, 39, 37, 255),
+        //     showCollisionObjects: true,
+        // });
 
         const outside = map.findObject("Interactions", (obj) => obj.name === "door");
         if (outside) {
@@ -112,7 +112,7 @@ export class Work extends Scene {
             return;
         }
 
-        this.player.setControls(this.cursors, this.camera);
+        this.player.setControls(this.cursors, this.camera, 0.5);
     }
 }
 

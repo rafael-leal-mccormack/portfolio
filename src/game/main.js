@@ -15,6 +15,11 @@ const config = {
     height: 400,
     parent: 'game-container',
     backgroundColor: '#028af8',
+    render: {
+        pixelArt: true,
+        antialias: true,
+        roundPixels: false,
+    },
     scene: [
         Boot,
         Preloader,
@@ -26,10 +31,17 @@ const config = {
     ],
     physics: {
         default: "arcade",
+        fps: 24,
         arcade: {
           gravity: { y: 0 } // Top down game, so no gravity
         }
-      }
+      },
+      fps: {
+        min: 24,
+        target: 24,
+        forceSetTimeOut: false,
+        smoothStep: true,
+      },
 };
 
 const StartGame = (parent) => {
