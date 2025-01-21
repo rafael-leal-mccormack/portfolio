@@ -65,7 +65,6 @@ export const SimpleGamepad = (function () {
 
     // Function to simulate keyboard events
     function simulateKey(key, isPressed) {
-      console.log("pressing key", key)
         const event = new KeyboardEvent(isPressed ? 'keydown' : 'keyup', {
             key: key,
             code: key === 'e' ? 'KeyE' : 'Space',
@@ -188,22 +187,31 @@ export const SimpleGamepad = (function () {
         ctx.arc(stick.dx, stick.dy, stick.radius / 2, 0, Math.PI * 2);
         ctx.fill();
 
-        // Draw buttons
-        buttons.forEach((button) => {
+        // Draw buttons with text
+        buttons.forEach(button => {
             const x = buttonBase.x - button.x;
-            const y = buttonBase.y - button.y;
-
+            const y = buttonBase.y - button.y - (button.name === 'a' ? 30 : 0) + 35;
+            
+            // Draw button circle
             ctx.fillStyle = button.color;
             ctx.beginPath();
             ctx.arc(x, y, button.r, 0, Math.PI * 2);
             ctx.fill();
 
+            // Draw button press effect
             if (gameState[button.name]) {
-                ctx.fillStyle = "rgba(255,255,255,0.5)";
+                ctx.fillStyle = 'rgba(255,255,255,0.5)';
                 ctx.beginPath();
                 ctx.arc(x, y, button.r * 0.8, 0, Math.PI * 2);
                 ctx.fill();
             }
+
+            // Add text
+            ctx.fillStyle = 'white';
+            ctx.font = '16px Arial';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText(button.name === 'a' ? 'E' : 'SPACE', x, y);
         });
 
         requestAnimationFrame(draw);
