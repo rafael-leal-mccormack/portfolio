@@ -1,5 +1,6 @@
 import { updatePlayerAnimation } from "../animations/PlayerAnimations";
 import Phaser from "phaser";
+import { SimpleGamepad } from "../utils/SimpleGamepad";
 
 export class Player {
     playerObj;
@@ -39,17 +40,20 @@ export class Player {
         this.cursors = cursors;
         this.playerObj.body.setVelocity(0);
 
-        // Horizontal movement
-        if (this.cursors.left.isDown) {
+        // Get gamepad state
+        const gamepadState = SimpleGamepad.getState();
+
+        // Horizontal movement - check both keyboard and gamepad
+        if (this.cursors.left.isDown || gamepadState['x-axis'] < -0.2) {
             this.playerObj.body.setVelocityX(-100 * multiplier);
-        } else if (this.cursors.right.isDown) {
+        } else if (this.cursors.right.isDown || gamepadState['x-axis'] > 0.2) {
             this.playerObj.body.setVelocityX(100 * multiplier);
         }
 
-        // Vertical movement
-        if (this.cursors.up.isDown) {
+        // Vertical movement - check both keyboard and gamepad
+        if (this.cursors.up.isDown || gamepadState['y-axis'] < -0.2) {
             this.playerObj.body.setVelocityY(-100 * multiplier);
-        } else if (this.cursors.down.isDown) {
+        } else if (this.cursors.down.isDown || gamepadState['y-axis'] > 0.2) {
             this.playerObj.body.setVelocityY(100 * multiplier);
         }
 

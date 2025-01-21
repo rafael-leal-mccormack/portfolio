@@ -3,6 +3,7 @@ import { Player } from "../objects/player";
 import { createPlayerAnimations } from "../animations/PlayerAnimations";
 import { fadeIn, fadeOut } from "../animations/Scenes";
 import { EventBus } from "../EventBus";
+import { SimpleGamepad } from "../utils/SimpleGamepad";
 
 export class Home extends Scene {
     constructor() {
@@ -146,6 +147,25 @@ export class Home extends Scene {
         }
 
         const keyE = this.input.keyboard.addKey("E");
+        
+        // Track previous gamepad state to detect button press
+        let prevGamepadAState = 0;
+        
+        // TODO: optimize with gamepad and keyboard
+        // Create an update listener for the gamepad
+        this.events.on('update', () => {
+            const gamepadState = SimpleGamepad.getState();
+            
+            // Check if 'a' button was just pressed (transition from 0 to 1)
+            if (gamepadState.a === 1 && prevGamepadAState === 0) {
+                if (this.tooltip.visible) {
+                    EventBus.emit("show-picture", this.pictureType);
+                }
+            }
+            prevGamepadAState = gamepadState.a;
+        });
+
+        // Keep existing keyboard listener
         keyE.on("down", () => {
             if (this.tooltip.visible) {
                 EventBus.emit("show-picture", this.pictureType);

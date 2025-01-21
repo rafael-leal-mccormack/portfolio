@@ -54,6 +54,7 @@ export const PhaserGame = forwardRef(function PhaserGame(
             }
             ref.current.scene = currentScene;
             const canvas = document.querySelector("canvas");
+            canvas.classList.add("game-canvas")
             canvas.click();
             canvas.focus();
         });

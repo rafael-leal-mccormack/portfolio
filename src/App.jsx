@@ -2,7 +2,7 @@ import { useRef, useState } from 'react';
 import { PhaserGame } from './game/PhaserGame';
 import { EventBus } from './game/EventBus';
 import { useEffect } from 'react';
-
+import { SimpleGamepad } from './game/utils/SimpleGamepad';
 function App() {
     const phaserRef = useRef();
     const [showModal, setShowModal] = useState(false);
@@ -15,6 +15,7 @@ function App() {
             setShowModal(true);
         };
 
+        SimpleGamepad.init();
         EventBus.on('show-picture', handleShowPicture);
 
         return () => {
