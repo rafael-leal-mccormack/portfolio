@@ -85,6 +85,11 @@ export class Preloader extends Scene
         this.load.image("nbaIcon", "work/Nba_Logo.png");
         this.load.image("mentrIcon", "work/Mentr_Logo.png");
         this.load.image("airclawIcon", "work/Airclaw_Logo.png");
+
+        let fontFace = new FontFace('Karmatic', 'url(assets/fonts/ka1.ttf)');
+        fontFace.load().then(font => {
+            document.fonts.add(font);
+        });
     }
 
     create ()

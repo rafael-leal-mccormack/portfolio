@@ -51,12 +51,21 @@ export class MainMenu extends Scene {
             .text(
                 this.game.renderer.width / 2,
                 this.game.renderer.height / 2 + 50,
-                `My Portfolio`,
+                `Raf's Portfolio`,
                 {
                     fontFamily: "Karmatic",
                     fontSize: 38,
                     color: "#ffffff",
                     align: "center",
+                    shadow: {
+                        color: "#000000",
+                        offsetX: 4,
+                        offsetY: 0,
+                        blur: 0,
+                        stroke: true,
+                        fill: true,
+                    }
+                    
                 }
             )
             .setDepth(100)
@@ -72,6 +81,14 @@ export class MainMenu extends Scene {
                     fontSize: 24,
                     color: "#ffffff",
                     align: "center",
+                    shadow: {
+                        color: "#000000",
+                        offsetX: 4,
+                        offsetY: 0,
+                        blur: 0,
+                        stroke: true,
+                        fill: true,
+                    }
                 }
             )
             .setDepth(100)

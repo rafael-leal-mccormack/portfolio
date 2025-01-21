@@ -118,8 +118,3 @@ body {
     font-size: 48px;
     cursor: pointer;
 }
-
-@font-face {
-    font-family: 'Karmatic';
-    src: url('assets/fonts/ka1.ttf');
-}
