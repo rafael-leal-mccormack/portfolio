@@ -4,6 +4,8 @@ import { createPlayerAnimations } from "../animations/PlayerAnimations";
 import { fadeIn, fadeOut } from "../animations/Scenes";
 import { EventBus } from "../EventBus";
 import { SimpleGamepad } from "../utils/SimpleGamepad";
+import { createZone } from "../utils/CreateZone";
+import { createDialog, setDialogMobileControls } from "../utils/CreateDialog";
 
 export class Home extends Scene {
     constructor() {
@@ -146,6 +148,60 @@ export class Home extends Scene {
             );
         }
 
+
+        this.fridgeZone = createZone.bind(this)(
+            map,
+            "Interactions",
+            "fridge",
+            () => {
+                console.log("entering zone")
+                this.tooltip.setVisible(true);
+                this.tooltip.setText("Press E to interact");
+                this.tooltip.setPosition(
+                    this.player.getX() - this.tooltip.width / 4,
+                    this.player.getY() - this.tooltip.height
+                );
+            }
+        );
+
+        this.bookcaseZone = createZone.bind(this)(
+            map,
+            "Interactions",
+            "bookcase",
+            () => {
+                this.tooltip.setVisible(true);
+                this.tooltip.setText("Press E to interact");
+                this.tooltip.setPosition(
+                    this.player.getX() - this.tooltip.width / 4,
+                    this.player.getY() - this.tooltip.height
+                );
+            }
+        );
+
+        this.bedZone = createZone.bind(this)(map, "Interactions", "bed", () => {
+            this.tooltip.setVisible(true);
+            this.tooltip.setText("Press E to interact");
+            this.tooltip.setPosition(
+                this.player.getX() - this.tooltip.width / 4,
+                this.player.getY() - this.tooltip.height
+            );
+        });
+
+
+        const fridgeText = [
+            "Hmmm... what to cook for dinner? Maybe Carne con papa?",
+        ];
+
+        const bookcaseTexts = [
+            "There's programming books and manga sprawled about...",
+        ];
+
+        const bedTexts = [
+            "A nap would be great but it's probably not the best time...",
+        ];
+
+
+
         const keyE = this.input.keyboard.addKey("E");
         
         // Track previous gamepad state to detect button press
@@ -161,15 +217,28 @@ export class Home extends Scene {
                 if (this.tooltip.visible) {
                     EventBus.emit("show-picture", this.pictureType);
                 }
+
+                this.setupInteractiveZone(this.fridgeZone, fridgeText);
+                this.setupInteractiveZone(this.bookcaseZone, bookcaseTexts);
+                this.setupInteractiveZone(this.bedZone, bedTexts);
             }
+
+            setDialogMobileControls.bind(this)(prevGamepadAState, this.fridgeZone)
+            setDialogMobileControls.bind(this)(prevGamepadAState, this.bookcaseZone)
+            setDialogMobileControls.bind(this)(prevGamepadAState, this.bedZone)
+
             prevGamepadAState = gamepadState.a;
         });
 
         // Keep existing keyboard listener
         keyE.on("down", () => {
-            if (this.tooltip.visible) {
+            if (this.tooltip.visible && this.physics.overlap(this.player.getPlayer(), this.pictureZone)) {
                 EventBus.emit("show-picture", this.pictureType);
             }
+
+            this.setupInteractiveZone(this.fridgeZone, fridgeText);
+            this.setupInteractiveZone(this.bookcaseZone, bookcaseTexts);
+            this.setupInteractiveZone(this.bedZone, bedTexts);
         });
 
         const pets = map.findObject(
@@ -266,6 +335,13 @@ export class Home extends Scene {
         }
     }
 
+
+    setupInteractiveZone(zone, dialogTexts) {
+        if (this.physics.overlap(this.player.getPlayer(), zone)) {
+            createDialog.bind(this)(dialogTexts);
+        }
+    }
+
     update(time, delta) {
         this.controls.update(delta);
         if (this.fadingOut) {
@@ -276,7 +352,9 @@ export class Home extends Scene {
         if (
             this.pictureZone &&
             !this.physics.overlap(this.player.getPlayer(), this.pictureZone) &&
-            !this.physics.overlap(this.player.getPlayer(), this.petsZone)
+            !this.physics.overlap(this.player.getPlayer(), this.petsZone) && !this.physics.overlap(this.player.getPlayer(), this.bookcaseZone) &&
+            !this.physics.overlap(this.player.getPlayer(), this.bedZone) &&
+            !this.physics.overlap(this.player.getPlayer(), this.fridgeZone)
         ) {
             this.tooltip.setVisible(false);
         }

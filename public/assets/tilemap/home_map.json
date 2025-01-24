@@ -153,6 +153,39 @@
                  "width":47.0588235294118,
                  "x":480.672268907563,
                  "y":301.680672268908
+                }, 
+                {
+                 "height":26.0504201680673,
+                 "id":12,
+                 "name":"bookcase",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":26.8907563025209,
+                 "x":530.252100840336,
+                 "y":289.915966386555
+                }, 
+                {
+                 "height":24.3697478991597,
+                 "id":14,
+                 "name":"fridge",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":21.8487394957983,
+                 "x":397.058823529412,
+                 "y":291.176470588235
+                }, 
+                {
+                 "height":36.5546218487395,
+                 "id":15,
+                 "name":"bed",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":33.1932773109244,
+                 "x":599.579831932773,
+                 "y":290.756302521008
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -231,7 +264,7 @@
          "y":0
         }],
  "nextlayerid":10,
- "nextobjectid":12,
+ "nextobjectid":16,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.11.1",

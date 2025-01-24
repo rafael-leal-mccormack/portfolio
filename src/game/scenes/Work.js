@@ -4,7 +4,8 @@ import { createPlayerAnimations } from "../animations/PlayerAnimations";
 import { fadeIn, fadeOut } from "../animations/Scenes";
 import { createTooltip } from "../utils/tooltip";
 import { SimpleGamepad } from "../utils/SimpleGamepad";
-import { EventBus } from "../EventBus";
+import { createDialog, setDialogMobileControls } from "../utils/CreateDialog";
+import { createZone } from "../utils/CreateZone";
 
 export class Work extends Scene {
     constructor() {
@@ -164,136 +165,39 @@ export class Work extends Scene {
 
         // Track previous gamepad state to detect button press
         let prevGamepadAState = 0;
-
-        // TODO: optimize with gamepad and keyboard
         // Create an update listener for the gamepad
         this.events.on("update", () => {
             const gamepadState = SimpleGamepad.getState();
 
             // Check if 'a' button was just pressed (transition from 0 to 1)
             if (gamepadState.a === 1 && prevGamepadAState === 0) {
-                if (
-                    this.physics.overlap(this.player.getPlayer(), this.ukgZone)
-                ) {
-                    if (!this.dialogBox) {
-                        const dialogText = [
-                            "Welcome to UKG!",
-                            "I worked here as a Software Engineer from 2021-2023.",
-                            "I helped maintain and develop features for their HR and Payroll software.",
-                            "Press SPACE to continue...",
-                        ];
-
-                        // Create dialog box background - centered at 300,260
-                        this.dialogBox = this.add
-                            .rectangle(300, 260, 280, 60, 0x000000)
-                            .setScrollFactor(0)
-                            .setDepth(1000);
-                        this.dialogBox.setStrokeStyle(2, 0xffffff);
-
-                        // Add text - positioned relative to dialog box
-                        this.dialogText = this.add
-                            .text(300, 260, dialogText[0], {
-                                fontFamily: "Arial",
-                                fontSize: "14px", // Smaller font size
-                                color: "#ffffff",
-                                wordWrap: { width: 260 }, // Match dialog box width
-                                align: "center",
-                            })
-                            .setScrollFactor(0)
-                            .setDepth(1001);
-
-                        // Center the text in the dialog box
-                        this.dialogText.setX(300 - this.dialogText.width / 2);
-                        this.dialogText.setY(260 - this.dialogText.height / 2);
-
-                        // Setup dialog state
-                        this.currentDialogIndex = 0;
-                        this.dialogTexts = dialogText;
-
-                        // Add space key listener for next dialog
-                        this.spaceKey = this.input.keyboard.addKey("SPACE");
-                        this.spaceKey.on("down", this.showNextDialog, this);
-                    }
-                }
+                this.setupUkgZone();
             }
 
-            // check if b button was just pressed (transition from 0 to 1)
-            if (gamepadState.b === 1 && prevGamepadAState === 0) {
-                if (this.physics.overlap(this.player.getPlayer(), this.ukgZone)) {
-                    // TODO: fix panel skipping issue
-                    this.showNextDialog();
-                }
-            }
-            prevGamepadAState = gamepadState.a;
+            setDialogMobileControls.bind(this)(prevGamepadAState, this.ukgZone);
         });
 
         // if E is pressed, create a dialog box
         this.enterKey = this.input.keyboard.addKey("E");
         this.enterKey.on("down", () => {
-            if (this.physics.overlap(this.player.getPlayer(), this.ukgZone)) {
-                if (!this.dialogBox) {
-                    const dialogText = [
-                        "Welcome to UKG!",
-                        "I worked here as a Software Engineer from 2021-2023.",
-                        "I helped maintain and develop features for their HR and Payroll software.",
-                        "Press SPACE to continue...",
-                    ];
-
-                    // Create dialog box background - centered at 300,260
-                    this.dialogBox = this.add
-                        .rectangle(300, 260, 280, 60, 0x000000)
-                        .setScrollFactor(0)
-                        .setDepth(1000);
-                    this.dialogBox.setStrokeStyle(2, 0xffffff);
-
-                    // Add text - positioned relative to dialog box
-                    this.dialogText = this.add
-                        .text(300, 260, dialogText[0], {
-                            fontFamily: "Arial",
-                            fontSize: "14px", // Smaller font size
-                            color: "#ffffff",
-                            wordWrap: { width: 260 }, // Match dialog box width
-                            align: "center",
-                        })
-                        .setScrollFactor(0)
-                        .setDepth(1001);
-
-                    // Center the text in the dialog box
-                    this.dialogText.setX(300 - this.dialogText.width / 2);
-                    this.dialogText.setY(260 - this.dialogText.height / 2);
-
-                    // Setup dialog state
-                    this.currentDialogIndex = 0;
-                    this.dialogTexts = dialogText;
-
-                    // Add space key listener for next dialog
-                    this.spaceKey = this.input.keyboard.addKey("SPACE");
-                    this.spaceKey.on("down", this.showNextDialog, this);
-                }
-            }
+            this.setupUkgZone();
         });
     }
 
-    showNextDialog() {
-        if (!this.dialogBox) return;
-
-        this.currentDialogIndex++;
-        if (this.currentDialogIndex >= this.dialogTexts.length) {
-            // Remove dialog box when finished
-            this.dialogBox.destroy();
-            this.dialogText.destroy();
-            this.dialogBox = null;
-            this.dialogText = null;
-            this.spaceKey.removeAllListeners();
-        } else {
-            // Show next text
-            this.dialogText.setText(this.dialogTexts[this.currentDialogIndex]);
-            // Re-center the text after changing it
-            this.dialogText.setX(300 - this.dialogText.width / 2);
-            this.dialogText.setY(260 - this.dialogText.height / 2);
+    setupUkgZone() {
+        if (this.physics.overlap(this.player.getPlayer(), this.ukgZone)) {
+            createDialog.bind(this)([
+                "UKG\nPress SPACE to continue...",
+                "I've worked here as a Software Engineer from 2018 to now.",
+                "I grew from an intern to a Lead Engineer on the Design System team.",
+                "I built a design system component library that is used by...",
+                "thousands of employees and millions of customers.",
+                "I'm now an engineer on the Recruiting and Talent Acquisition team.",
+                "We are improving the hiring process for our customers and recruiters!",
+            ]);
         }
     }
-
+    
     update(time, delta) {
         // Game loop, runs continuously
         this.controls.update(delta);
@@ -305,8 +209,10 @@ export class Work extends Scene {
         this.player.setControls(this.cursors, this.camera, 0.5);
 
         if (
-            this.ukgZone &&
-            !this.physics.overlap(this.player.getPlayer(), this.ukgZone)
+            !this.physics.overlap(this.player.getPlayer(), this.ukgZone) &&
+            !this.physics.overlap(this.player.getPlayer(), this.bookcaseZone) &&
+            !this.physics.overlap(this.player.getPlayer(), this.bedZone) &&
+            !this.physics.overlap(this.player.getPlayer(), this.fridgeZone)
         ) {
             this.tooltip.setVisible(false);
         }
