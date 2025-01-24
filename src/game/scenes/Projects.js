@@ -13,6 +13,8 @@ export class Projects extends Scene {
     }
 
     fadingOut = false;
+    prevGamepadAState = 0;
+    prevGamepadBState = 0;
 
     init() {
         this.fadingOut = false;
@@ -240,23 +242,22 @@ export class Projects extends Scene {
             this.setupInteractiveZone(this.mentrZone, mentrTexts, mentrUrl);
         });
 
-        const prevGamepadAState = 0;
-
         this.events.on("update", () => {
             const gamepadState = SimpleGamepad.getState();
 
             // Check if 'a' button was just pressed (transition from 0 to 1)
-            if (gamepadState.a === 1 && prevGamepadAState === 0) {
+            if (gamepadState.a === 1 && this.prevGamepadAState === 0) {
                 this.setupInteractiveZone(this.airclawZone, airclawTexts, airclawUrl);
-
                 this.setupInteractiveZone(this.nbaZone, nbaTexts, nbaUrl);
-
                 this.setupInteractiveZone(this.mentrZone, mentrTexts, mentrUrl);
             }
+            this.prevGamepadAState = gamepadState.a;
 
-            setDialogMobileControls.bind(this)(prevGamepadAState, this.airclawZone);
-            setDialogMobileControls.bind(this)(prevGamepadAState, this.nbaZone);
-            setDialogMobileControls.bind(this)(prevGamepadAState, this.mentrZone);
+            // Pass the correct state variable for dialog controls
+            setDialogMobileControls.bind(this)(this.prevGamepadBState, this.airclawZone);
+            setDialogMobileControls.bind(this)(this.prevGamepadBState, this.nbaZone);
+            setDialogMobileControls.bind(this)(this.prevGamepadBState, this.mentrZone);
+            this.prevGamepadBState = gamepadState.b;
         });
     }
 

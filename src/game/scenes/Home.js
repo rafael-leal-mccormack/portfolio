@@ -126,7 +126,7 @@ export class Home extends Scene {
                 picture.width,
                 picture.height
             );
-            
+
             this.physics.world.enable(this.pictureZone);
             this.pictureZone.body.debugShowBody = false;
             this.physics.add.overlap(
@@ -148,13 +148,12 @@ export class Home extends Scene {
             );
         }
 
-
         this.fridgeZone = createZone.bind(this)(
             map,
             "Interactions",
             "fridge",
             () => {
-                console.log("entering zone")
+                console.log("entering zone");
                 this.tooltip.setVisible(true);
                 this.tooltip.setText("Press E to interact");
                 this.tooltip.setPosition(
@@ -187,7 +186,6 @@ export class Home extends Scene {
             );
         });
 
-
         const fridgeText = [
             "Hmmm... what to cook for dinner? Maybe Carne con papa?",
         ];
@@ -200,21 +198,26 @@ export class Home extends Scene {
             "A nap would be great but it's probably not the best time...",
         ];
 
-
-
         const keyE = this.input.keyboard.addKey("E");
-        
+
         // Track previous gamepad state to detect button press
         let prevGamepadAState = 0;
-        
+
         // TODO: optimize with gamepad and keyboard
         // Create an update listener for the gamepad
-        this.events.on('update', () => {
+        this.events.on("update", () => {
             const gamepadState = SimpleGamepad.getState();
-            
+
             // Check if 'a' button was just pressed (transition from 0 to 1)
             if (gamepadState.a === 1 && prevGamepadAState === 0) {
-                if (this.tooltip.visible) {
+                if (
+                    (this.tooltip.visible &&
+                        this.physics.overlap(
+                            this.player.getPlayer(),
+                            this.pictureZone
+                        )) ||
+                    this.physics.overlap(this.player.getPlayer(), this.petsZone)
+                ) {
                     EventBus.emit("show-picture", this.pictureType);
                 }
 
@@ -223,16 +226,29 @@ export class Home extends Scene {
                 this.setupInteractiveZone(this.bedZone, bedTexts);
             }
 
-            setDialogMobileControls.bind(this)(prevGamepadAState, this.fridgeZone)
-            setDialogMobileControls.bind(this)(prevGamepadAState, this.bookcaseZone)
-            setDialogMobileControls.bind(this)(prevGamepadAState, this.bedZone)
+            setDialogMobileControls.bind(this)(
+                prevGamepadAState,
+                this.fridgeZone
+            );
+            setDialogMobileControls.bind(this)(
+                prevGamepadAState,
+                this.bookcaseZone
+            );
+            setDialogMobileControls.bind(this)(prevGamepadAState, this.bedZone);
 
             prevGamepadAState = gamepadState.a;
         });
 
         // Keep existing keyboard listener
         keyE.on("down", () => {
-            if (this.tooltip.visible && this.physics.overlap(this.player.getPlayer(), this.pictureZone)) {
+            if (
+                (this.tooltip.visible &&
+                    this.physics.overlap(
+                        this.player.getPlayer(),
+                        this.pictureZone
+                    )) ||
+                this.physics.overlap(this.player.getPlayer(), this.petsZone)
+            ) {
                 EventBus.emit("show-picture", this.pictureType);
             }
 
@@ -335,7 +351,6 @@ export class Home extends Scene {
         }
     }
 
-
     setupInteractiveZone(zone, dialogTexts) {
         if (this.physics.overlap(this.player.getPlayer(), zone)) {
             createDialog.bind(this)(dialogTexts);
@@ -352,7 +367,8 @@ export class Home extends Scene {
         if (
             this.pictureZone &&
             !this.physics.overlap(this.player.getPlayer(), this.pictureZone) &&
-            !this.physics.overlap(this.player.getPlayer(), this.petsZone) && !this.physics.overlap(this.player.getPlayer(), this.bookcaseZone) &&
+            !this.physics.overlap(this.player.getPlayer(), this.petsZone) &&
+            !this.physics.overlap(this.player.getPlayer(), this.bookcaseZone) &&
             !this.physics.overlap(this.player.getPlayer(), this.bedZone) &&
             !this.physics.overlap(this.player.getPlayer(), this.fridgeZone)
         ) {

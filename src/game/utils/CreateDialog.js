@@ -64,9 +64,8 @@ export function setDialogMobileControls(prevGamepadAState, zone) {
   const gamepadState = SimpleGamepad.getState();
   if (gamepadState.b === 1 && prevGamepadAState === 0) {
     if (this.physics.overlap(this.player.getPlayer(), zone)) {
-        // TODO: fix panel skipping issue
         showNextDialog.bind(this)();
     }
-}
-  prevGamepadAState = gamepadState.a;
+  }
+  prevGamepadAState = gamepadState.b;
 }

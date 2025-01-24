@@ -163,18 +163,23 @@ export class Work extends Scene {
             );
         }
 
-        // Track previous gamepad state to detect button press
-        let prevGamepadAState = 0;
+        // Track separate gamepad states for different actions
+        this.prevGamepadAState = 0;
+        this.prevGamepadBState = 0;
+        
         // Create an update listener for the gamepad
         this.events.on("update", () => {
             const gamepadState = SimpleGamepad.getState();
 
             // Check if 'a' button was just pressed (transition from 0 to 1)
-            if (gamepadState.a === 1 && prevGamepadAState === 0) {
+            if (gamepadState.a === 1 && this.prevGamepadAState === 0) {
                 this.setupUkgZone();
             }
+            this.prevGamepadAState = gamepadState.a;
 
-            setDialogMobileControls.bind(this)(prevGamepadAState, this.ukgZone);
+            // Pass the correct state variable for dialog controls
+            setDialogMobileControls.bind(this)(this.prevGamepadBState, this.ukgZone);
+            this.prevGamepadBState = gamepadState.b;
         });
 
         // if E is pressed, create a dialog box

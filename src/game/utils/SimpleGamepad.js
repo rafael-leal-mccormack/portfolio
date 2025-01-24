@@ -30,7 +30,7 @@ export const SimpleGamepad = (function () {
         },
         {
             x: config.radius * 2,
-            y: config.radius,
+            y: config.radius - 30,
             r: config.radius,
             color: config.colors.green,
             name: "b",
@@ -48,7 +48,7 @@ export const SimpleGamepad = (function () {
 
     // Joystick configuration
     const stick = {
-        radius: 40,
+        radius: 60,
         x: config.width * 0.2, // 20% from left
         y: config.height * 0.8, // 80% from top
         dx: 0,
@@ -184,13 +184,13 @@ export const SimpleGamepad = (function () {
         // Draw joystick stick
         ctx.fillStyle = config.colors.joystick.stick;
         ctx.beginPath();
-        ctx.arc(stick.dx, stick.dy, stick.radius / 2, 0, Math.PI * 2);
+        ctx.arc(stick.dx, stick.dy, stick.radius / 2.5, 0, Math.PI * 2);
         ctx.fill();
 
         // Draw buttons with text
         buttons.forEach(button => {
             const x = buttonBase.x - button.x;
-            const y = buttonBase.y - button.y - (button.name === 'a' ? 30 : 0) + 35;
+            const y = buttonBase.y - button.y;
             
             // Draw button circle
             ctx.fillStyle = button.color;
