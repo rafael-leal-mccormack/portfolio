@@ -41,11 +41,7 @@ function App() {
             <PhaserGame ref={phaserRef} />
             <div className="controls">
                 <div
-                    style={{
-                        display: "flex",
-                        flexDirection: "column",
-                        gap: "10px",
-                    }}
+                    className="controls-container"
                 >
                     <button
                         className="button"
