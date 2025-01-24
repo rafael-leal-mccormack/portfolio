@@ -82,6 +82,10 @@ body {
 }
 
 @media (max-width: 720px) {
+    body {
+        overflow: hidden;
+    }
+    
     #app {
         align-items: initial;
         padding-top: 7rem;

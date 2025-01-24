@@ -1,8 +1,10 @@
 import { EventBus } from "../EventBus";
 import { Scene } from "phaser";
+import { SimpleGamepad } from "../utils/SimpleGamepad";
 
 export class MainMenu extends Scene {
     logoTween;
+    prevGamepadAState = 0;
 
     constructor() {
         super("MainMenu");
@@ -113,6 +115,20 @@ export class MainMenu extends Scene {
 
         const music = this.sound.add("menu-music");
         music.play({ loop: true });
+
+        // Track gamepad state
+        this.prevGamepadAState = 0;
+        
+        // Create an update listener for the gamepad
+        this.events.on("update", () => {
+            const gamepadState = SimpleGamepad.getState();
+
+            // Check if 'a' button was just pressed (transition from 0 to 1)
+            if (gamepadState.a === 1 && this.prevGamepadAState === 0) {
+                this.changeScene();
+            }
+            this.prevGamepadAState = gamepadState.a;
+        });
 
         EventBus.emit("current-scene-ready", this);
     }
