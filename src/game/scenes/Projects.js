@@ -212,8 +212,8 @@ export class Projects extends Scene {
 
         const airclawTexts = [
             "Airclaw\nPress SPACE to continue...",
-            "I built with a decentralized VPN application with...",
-            "a couple of friends to support the DewiCats NFT Project",
+            "I built a decentralized VPN application with...",
+            "friends to support the DewiCats NFT Project",
             "We used React, Rust, Supabase, and Go to build the app.",
         ];
 
@@ -228,7 +228,7 @@ export class Projects extends Scene {
             "Mentr\nPress SPACE to continue...",
             "I built a website that allows creators to...",
             "create whitelabeled educational content and sell it to their audience.",
-            "I used NextJS, Postgres, Cloudinary and CDNs to build the site.",
+            "I used NextJS, Postgres, Cloudinary, Stripe, and CDNs to build the site.",
         ];
 
         const mentrUrl = "http://www.emprende.inc";
